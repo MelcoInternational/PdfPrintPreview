@@ -17,8 +17,9 @@ target_link_libraries(PdfPrintPreview
   Qt5::Widgets
   Qt5::Core
   Qt5::PrintSupport
-  ${Poppler_Qt5_LIBRARY}
-  ${Poppler_Core_LIBRARY}
+  poppler-cpp$<$<CONFIG:Debug>:d>
+  poppler-qt5$<$<CONFIG:Debug>:d>
   )
 
+set_target_properties(PdfPrintPreview PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 install(TARGETS PdfPrintPreview DESTINATION bin)

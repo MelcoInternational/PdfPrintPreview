@@ -21,14 +21,15 @@ int main(int argc, char *argv[]) {
 
   auto fileName = argv[1];
 
-  auto doc = Poppler::Document::load(fileName);
-  auto page = doc->page(0);
-
+  std::shared_ptr<Poppler::Document> doc(Poppler::Document::load(fileName));
+  
   QPrintPreviewDialog *pd = new QPrintPreviewDialog();
   
   pd->connect(pd, &QPrintPreviewDialog::paintRequested,
 	      [&](QPrinter* printer) {
-		auto resolution = printer->resolution();
+	  printer->setResolution(600);
+
+	auto resolution = printer->resolution();
 		QPainter painter;
 		if (! painter.begin(printer)) { // failed to open file
 		  qWarning("failed to open file, is it writable?");
@@ -38,9 +39,9 @@ int main(int argc, char *argv[]) {
 		for(size_t i = 0;i < 1;i++) {
 		  if(i != 0)
 		    printer->newPage();
-		  std::cerr << doc->page(i)->pageSize().width() << ", " << doc->page(i)->pageSize().height() << std::endl;
+		  std::unique_ptr<Poppler::Page> page(doc->page(i));
 		  auto mult = 1.0;
-		  auto image = doc->page(i)->renderToImage(resolution * mult, resolution * mult);
+		  auto image = page->renderToImage(resolution * mult, resolution * mult);
 		  if(!image.isNull()) {
 		    painter.drawImage(QRectF(0, 0, image.width() / mult, image.height() / mult), image,
 				      QRectF(0, 0, image.width(), image.height()),
