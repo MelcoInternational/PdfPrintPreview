@@ -15,6 +15,7 @@
 #include "poppler/qt5/poppler-qt5.h"
 #include <QPrintPreviewDialog>
 #include <iostream>
+#include <memory>
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
