@@ -20,10 +20,10 @@
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
 
-  auto fileName = argv[1];
+  std::vector<std::shared_ptr<Poppler::Document>> docs;
+  for(size_t i = 1;i < argc;i++)
+	  docs.emplace_back(Poppler::Document::load(argv[i]));
 
-  std::shared_ptr<Poppler::Document> doc(Poppler::Document::load(fileName));
-  
   QPrintPreviewDialog *pd = new QPrintPreviewDialog();
   
   pd->connect(pd, &QPrintPreviewDialog::paintRequested,
@@ -36,19 +36,23 @@ int main(int argc, char *argv[]) {
 		  qWarning("failed to open file, is it writable?");
 		  return;
 		}
+		bool isFirst = true;
+		for (auto& doc : docs) {
+			for (size_t i = 0;i < 1;i++) {
+				if (!isFirst)
+					printer->newPage();
+				isFirst = false; 
 
-		for(size_t i = 0;i < 1;i++) {
-		  if(i != 0)
-		    printer->newPage();
-		  std::unique_ptr<Poppler::Page> page(doc->page(i));
-		  auto mult = 1.0;
-		  auto image = page->renderToImage(resolution * mult, resolution * mult);
-		  if(!image.isNull()) {
-		    painter.drawImage(QRectF(0, 0, image.width() / mult, image.height() / mult), image,
-				      QRectF(0, 0, image.width(), image.height()),
-				      Qt::AutoColor | Qt::DiffuseAlphaDither | Qt::DiffuseDither | Qt::PreferDither
-				      );
-		  }
+				std::unique_ptr<Poppler::Page> page(doc->page(i));
+				auto mult = 1.0;
+				auto image = page->renderToImage(resolution * mult, resolution * mult);
+				if (!image.isNull()) {
+					painter.drawImage(QRectF(0, 0, image.width() / mult, image.height() / mult), image,
+						QRectF(0, 0, image.width(), image.height()),
+						Qt::AutoColor | Qt::DiffuseAlphaDither | Qt::DiffuseDither | Qt::PreferDither
+					);
+				}
+			}
 		}
 	      });
   pd->setAttribute(Qt::WA_DeleteOnClose);
