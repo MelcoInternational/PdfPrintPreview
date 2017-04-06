@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
   
   pd->connect(pd, &QPrintPreviewDialog::paintRequested,
 	      [&](QPrinter* printer) {
-	  printer->setResolution(600);
+	  printer->setResolution(300);
 
 	auto resolution = printer->resolution();
 		QPainter painter;
