@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 
   auto printFunction = [&](QPrinter* printer) {
 	  printer->setResolution(300);
-
+	  printer->setFullPage(true);
 	  auto resolution = printer->resolution();
 	  QPainter painter;
 	  if (!painter.begin(printer)) { // failed to open file
