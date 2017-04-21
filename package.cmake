@@ -18,7 +18,10 @@ if(MSVC)
 else()
 #	CGET_HAS_DEPENDENCY(Freetype GIT git://git.savannah.gnu.org/freetype/freetype2.git VERSION VER-2-7-1)
 	FILE(APPEND "${CMAKE_BINARY_DIR}/set_freetype_library.cmake" "SET(FREETYPE_INCLUDE_DIR \"${CGET_INSTALL_DIR}/include/freetype2\" CACHE STRING \"\" FORCE)\n")
+
+        CGET_HAS_DEPENDENCY(libpng GIT git://git.code.sf.net/p/libpng/code VERSION v1.6.29 NO_FIND_PACKAGE)
 	CGET_HAS_DEPENDENCY(Fontconfig GIT git://anongit.freedesktop.org/fontconfig VERSION 2.12.1 NO_FIND_PACKAGE BREW_PACKAGE Fontconfig)
+
 endif()
 
 CGET_HAS_DEPENDENCY(FreeType NUGET_PACKAGE FreeType GIT git://git.sv.nongnu.org/freetype/freetype2.git VERSION VER-2-7-1 NO_FIND_VERSION OPTIONS -DBUILD_SHARED_LIBS:BOOL=true)
