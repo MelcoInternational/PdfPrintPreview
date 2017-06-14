@@ -67,6 +67,7 @@ int main(int argc, char *argv[]) {
   }
   else {
 	  QPrinter printer(QPrinter::HighResolution); 
+	  printer.setOutputFormat(QPrinter::NativeFormat);
 	  
 	  QPrintDialog* pd = new QPrintDialog(&printer);	  
 	  if (pd->exec() == QDialog::Accepted) {
