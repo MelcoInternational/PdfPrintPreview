@@ -12,6 +12,8 @@ find_package(Qt5PrintSupport REQUIRED)
 
 include(package.cmake)
 
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
+
 add_executable(PdfPrintPreview main.cpp)
 target_link_libraries(PdfPrintPreview
   Qt5::Widgets

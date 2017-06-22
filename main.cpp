@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
     }
     bool isFirst = true;
     for (auto &doc : docs) {
-      for (size_t i = 0; i < 1; i++) {
+      for (size_t i = 0; i < doc->numPages(); i++) {
         if (!isFirst)
           printer->newPage();
         isFirst = false;
