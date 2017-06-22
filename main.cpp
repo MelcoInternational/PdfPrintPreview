@@ -47,11 +47,10 @@ int main(int argc, char *argv[]) {
         isFirst = false;
 
         std::unique_ptr<Poppler::Page> page(doc->page(i));
-        auto mult = 1.0;
-        auto image = page->renderToImage(resolution * mult, resolution * mult);
+        auto image = page->renderToImage(resolution, resolution);
         if (!image.isNull()) {
           painter.drawImage(
-              QRectF(0, 0, image.width() / mult, image.height() / mult), image,
+              QRectF(0, 0, painter.device()->width(), painter.device()->height()), image,
               QRectF(0, 0, image.width(), image.height()),
               Qt::AutoColor | Qt::DiffuseAlphaDither | Qt::DiffuseDither |
                   Qt::PreferDither);
