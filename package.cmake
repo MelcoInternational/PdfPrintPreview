@@ -6,7 +6,7 @@ ENDIF()
 
 FILE(WRITE "${CMAKE_BINARY_DIR}/set_freetype_library.cmake" "")
 if(MSVC)
-	CGET_HAS_DEPENDENCY(iconv NUGET_PACKAGE libiconv GIT git://git.savannah.gnu.org/libiconv.git VERSION v1.14 NO_FIND_PACKAGE ALLOW_SYSTEM)
+	CGET_HAS_DEPENDENCY(iconv NUGET_PACKAGE libiconv NUGET_VERSION 1.14.0.11 GIT git://git.savannah.gnu.org/libiconv.git VERSION v1.14 NO_FIND_PACKAGE ALLOW_SYSTEM)
 
 	#Freetype has a bad config file; keyed to a very particular version of the library. This fixs that.
 	SET(FREETYPE_LIBRARY "${CGET_INSTALL_DIR}/lib/freetype271.lib")
@@ -24,10 +24,10 @@ else()
 
 endif()
 
-CGET_HAS_DEPENDENCY(FreeType NUGET_PACKAGE FreeType GIT git://git.sv.nongnu.org/freetype/freetype2.git VERSION VER-2-7-1 NO_FIND_VERSION OPTIONS -DBUILD_SHARED_LIBS:BOOL=true)
+CGET_HAS_DEPENDENCY(FreeType NUGET_PACKAGE FreeType NUGET_VERSION 2.7.1.1 GIT git://git.sv.nongnu.org/freetype/freetype2.git VERSION VER-2-7-1 NO_FIND_VERSION OPTIONS -DBUILD_SHARED_LIBS:BOOL=true)
 
 # Get find configs for poppler
-CGET_HAS_DEPENDENCY(extra-cmake-modules GITHUB KDE/extra-cmake-modules NO_FIND_PACKAGE)
+CGET_HAS_DEPENDENCY(extra-cmake-modules GITHUB KDE/extra-cmake-modules NO_FIND_PACKAGE COMMIT_ID fd60f2b893d0b07f96f0fd715109cbd8d4e66140)
 LIST(APPEND CMAKE_MODULE_PATH "${CGET_INSTALL_DIR}/share/ECM/find-modules")
 
 CGET_HAS_DEPENDENCY(Poppler GITHUB MelcoInternational/Poppler
