@@ -13,7 +13,6 @@
 #include <QtGui/QDesktopServices>
 #include <QtPrintSupport/QPrintDialog>
 #include <QtPrintSupport/QPrinter>
-#include <QtWebEngineWidgets/QWebEngineView>
 #include <condition_variable>
 #include <iostream>
 #include <memory>
