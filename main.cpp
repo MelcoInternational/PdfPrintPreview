@@ -4,6 +4,7 @@
 #include <QFileDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinterInfo>
+#include <QPainter>
 #include <QShowEvent>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
