@@ -5,12 +5,19 @@ ELSE()
 ENDIF()
 
 FILE(WRITE "${CMAKE_BINARY_DIR}/set_freetype_library.cmake" "")
+
+CGET_HAS_DEPENDENCY(FreeType NUGET_PACKAGE FreeType NUGET_VERSION 2.7.1.1 GIT git://git.sv.nongnu.org/freetype/freetype2.git VERSION VER-2-7-1 NO_FIND_VERSION OPTIONS -DBUILD_SHARED_LIBS:BOOL=true)
+
 if(MSVC)
 	CGET_HAS_DEPENDENCY(iconv NUGET_PACKAGE libiconv NUGET_VERSION 1.14.0.11 GIT git://git.savannah.gnu.org/libiconv.git VERSION v1.14 NO_FIND_PACKAGE ALLOW_SYSTEM)
 
 	#Freetype has a bad config file; keyed to a very particular version of the library. This fixs that.
-	SET(FREETYPE_LIBRARY "${CGET_INSTALL_DIR}/lib/freetype271.lib")
-
+	if(CGET_FreeType_INSTALL_DIR)
+		SET(FREETYPE_LIBRARY "${CGET_FreeType_INSTALL_DIR}/lib/freetype271.lib")
+	else()
+		SET(FREETYPE_LIBRARY "${CGET_INSTALL_DIR}/lib/freetype271.lib")
+	endif()
+	
 	# We have to propagate the fix to the poppler make file
 	STRING(REPLACE " " "\\ " FREETYPE_LIBRARY "${FREETYPE_LIBRARY}")
 	FILE(APPEND "${CMAKE_BINARY_DIR}/set_freetype_library.cmake" "SET(FREETYPE_LIBRARY \"${FREETYPE_LIBRARY}\" CACHE STRING \"\" FORCE)\n")
@@ -24,11 +31,13 @@ else()
 #	CGET_HAS_DEPENDENCY(Fontconfig GITHUB CMakePorts/fontconfig COMMIT_ID 7f4996621 NO_FIND_PACKAGE PORTS_PACKAGE1 Fontconfig BREW_PACKAGE1 Fontconfig)
 endif()
 
-CGET_HAS_DEPENDENCY(FreeType NUGET_PACKAGE FreeType NUGET_VERSION 2.7.1.1 GIT git://git.sv.nongnu.org/freetype/freetype2.git VERSION VER-2-7-1 NO_FIND_VERSION OPTIONS -DBUILD_SHARED_LIBS:BOOL=true)
-
 # Get find configs for poppler
 CGET_HAS_DEPENDENCY(extra-cmake-modules GITHUB KDE/extra-cmake-modules NO_FIND_PACKAGE COMMIT_ID fd60f2b893d0b07f96f0fd715109cbd8d4e66140)
-LIST(APPEND CMAKE_MODULE_PATH "${CGET_INSTALL_DIR}/share/ECM/find-modules")
+IF(CGET_extra-cmake-modules_INSTALL_DIR)
+	LIST(APPEND CMAKE_MODULE_PATH "${CGET_extra-cmake-modules_INSTALL_DIR}/share/ECM/find-modules")
+ELSE()
+	LIST(APPEND CMAKE_MODULE_PATH "${CGET_INSTALL_DIR}/share/ECM/find-modules")
+ENDIF()
 
 CGET_HAS_DEPENDENCY(Poppler GITHUB MelcoInternational/Poppler
 		OPTIONS_FILE "${CMAKE_BINARY_DIR}/set_freetype_library.cmake"
@@ -43,6 +52,6 @@ CGET_HAS_DEPENDENCY(Poppler GITHUB MelcoInternational/Poppler
 	-DBUILD_CPP_TESTS:BOOL=OFF
 	-DENABLE_UTILS:BOOL=OFF
 	-DENABLE_SPLASH:BOOL=ON
-	COMMIT_ID 1de4e921
+	COMMIT_ID c7452da6c7eb5a79ac9dd5d7eede37126a7ba570
 	)
  
