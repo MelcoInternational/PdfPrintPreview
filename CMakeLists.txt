@@ -11,6 +11,7 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
 
 include(package.cmake)
+find_package(Poppler REQUIRED)
 
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
